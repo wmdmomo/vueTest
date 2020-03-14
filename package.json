@@ -5,7 +5,8 @@
   "author": "wmd <wangpersist@163.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "icons": "vsvg -s ./src/assets/svg -t ./src/assets/icons",
+    "dev": "npm run icons &&webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
@@ -16,7 +17,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1"
+    "vue-router": "^3.0.1",
+    "vue-svgicon": "^3.2.6"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

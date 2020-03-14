@@ -3,8 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import SvgIcon from 'vue-svgicon'
 
 Vue.config.productionTip = false
+Vue.use(SvgIcon, {
+  tagName: 'svgicon'
+})
 
 /* eslint-disable no-new */
 new Vue({
