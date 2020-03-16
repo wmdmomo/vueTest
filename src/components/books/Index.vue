@@ -1,8 +1,11 @@
 <template>
   <div class="container">
     <div class="book-cover">
-      <img class="cover" :src="bookList[0].src" />
-      <span class="name">{{ bookList[0].author }}</span>
+      <img class="cover" :src="booklist.img" />
+      <span class="name">{{ booklist.name }}</span>
+    </div>
+    <div v-show="hoverIndex === originIndex" class="book-mask">
+      {{ booklist.quote }}
     </div>
   </div>
 </template>
@@ -11,7 +14,9 @@
 export default {
   name: 'book',
   props: {
-    bookList: Array
+    booklist: Object,
+    hoverIndex: Number,
+    originIndex: Number
   }
 }
 </script>

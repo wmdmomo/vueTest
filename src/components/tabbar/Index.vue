@@ -44,6 +44,7 @@ export default {
 
 <style scoped>
 .tab-bar {
+  margin-top: 20px;
   position: fixed;
   bottom: 0;
   left: 0;
