@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <Tabbar></Tabbar>
     <div class="note-header">
       <span>记事本</span>
@@ -23,14 +23,14 @@
           </div>
           <div
             class="detail-line"
-            v-for="(item, index) in noteList"
+            v-for="(item, index) in sortArr(noteList)"
             :key="index"
           >
             <div>
-              <input type="checkbox" />
-              <span>{{ item }}</span>
+              <input type="checkbox" @click="changeNote(item, 1)" />
+              <span>{{ item.title }}</span>
             </div>
-            <button class="undo" @click="undoNote(item)">取消</button>
+            <button class="undo" @click="changeNote(item, 2)">取消</button>
           </div>
         </div>
 
@@ -38,6 +38,15 @@
           <div class="detail-line detail-title">
             <span>已完成</span>
             <svgicon name="down" width="25" height="25"></svgicon>
+          </div>
+          <div
+            class="detail-line"
+            v-for="(item, index) in sortArr(doneList)"
+            :key="index"
+          >
+            <div class="under-line">
+              <span>{{ item.title }}</span>
+            </div>
           </div>
         </div>
 
@@ -48,14 +57,13 @@
           </div>
           <div
             class="detail-line"
-            v-for="(item, index) in undoList"
+            v-for="(item, index) in sortArr(undoList)"
             :key="index"
           >
             <div>
-              <input type="checkbox" />
-              <span>{{ item }}</span>
+              <span>{{ item.title }}</span>
             </div>
-            <button class="undo" @click="undoNote">恢复</button>
+            <button class="undo" @click="changeNote(item, 0)">恢复</button>
           </div>
         </div>
       </div>
@@ -67,6 +75,9 @@
 import '@/assets/icons/more'
 import '@/assets/icons/down'
 import Tabbar from '@/components/tabbar/Index'
+import { getNote, addNote, changeState } from '@/service/api'
+// import { getNote } from '@/service/api'
+import { parseTime } from '@/utils/date'
 export default {
   name: 'Note',
   components: {
@@ -80,19 +91,69 @@ export default {
       note: ''
     }
   },
+  computed: {
+    getdate() {
+      return parseTime(new Date(), 'y-m-d')
+    }
+  },
+  mounted() {
+    this.fetchNote()
+  },
   methods: {
-    subNote() {
-      this.noteList.push(this.note)
-      this.note = ''
+    sortArr(arr) {
+      return arr.sort((a, b) => a.id - b.id)
     },
-    undoNote(val) {
-      this.undoList.push(val)
+    deleteArr(arr, id) {
+      return arr.splice(
+        arr.findIndex(it => it.id === id),
+        1
+      )
+    },
+    async fetchNote() {
+      const res = await getNote(this.getdate)
+      this.noteList = res.data.noteList
+      this.doneList = res.data.doneList
+      this.undoList = res.data.undoList
+    },
+
+    async subNote() {
+      try {
+        await addNote({
+          title: this.note,
+          time: this.getdate
+        })
+        this.noteList.push(this.note)
+        this.note = ''
+      } catch (err) {
+        console.log(err)
+      }
+    },
+    async changeNote(item, val) {
+      try {
+        const res = await changeState(item.id, val)
+        console.log(res)
+        if (val === 1) {
+          this.doneList.push(item)
+          this.deleteArr(this.noteList, item.id)
+        } else if (val === 2) {
+          this.undoList.push(item)
+          this.deleteArr(this.noteList, item.id)
+        } else {
+          this.noteList.push(item)
+          this.deleteArr(this.undoList, item.id)
+        }
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.container {
+  margin-bottom: 180px;
+}
 .note-header {
   padding: 15px 0;
   background: aquamarine;
@@ -154,5 +215,9 @@ export default {
   padding: 10px;
   width: 80px;
   border-radius: 5px;
+}
+.under-line {
+  text-decoration: line-through;
+  color: gray;
 }
 </style>

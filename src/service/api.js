@@ -6,3 +6,12 @@ export function getStudent(param) {
 export function getBook(param) {
   return service.get(`/getTop?page=${param}`)
 }
+export function getNote(param) {
+  return service.get(`/getNote?time=${param}`)
+}
+export function addNote(data) {
+  return service.post('/addNote', data)
+}
+export function changeState(id, flag) {
+  return service.post(`/changeState?id=${id}&flag=${flag}`)
+}
