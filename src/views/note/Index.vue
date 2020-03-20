@@ -12,6 +12,7 @@
           class="write-input"
           type="text"
           placeholder="待办事项"
+          @keyup="subNote"
         />
         <button class="sub-input" @click="subNote">提交</button>
       </div>
@@ -19,33 +20,47 @@
         <div class="note-detail">
           <div class="detail-line detail-title">
             <span>未完成</span>
-            <svgicon name="down" width="25" height="25"></svgicon>
+            <svgicon
+              name="down"
+              width="25"
+              height="25"
+              @click="toogle('todo')"
+            ></svgicon>
           </div>
-          <div
-            class="detail-line"
-            v-for="(item, index) in sortArr(noteList)"
-            :key="index"
-          >
-            <div>
-              <input type="checkbox" @click="changeNote(item, 1)" />
-              <span>{{ item.title }}</span>
+          <div v-show="todo">
+            <div
+              class="detail-line"
+              v-for="(item, index) in sortArr(noteList)"
+              :key="index"
+            >
+              <div>
+                <input type="checkbox" @click="changeNote(item, 1)" />
+                <span>{{ item.title }}</span>
+              </div>
+              <button class="undo" @click="changeNote(item, 2)">取消</button>
             </div>
-            <button class="undo" @click="changeNote(item, 2)">取消</button>
           </div>
         </div>
 
         <div class="note-detail">
           <div class="detail-line detail-title">
             <span>已完成</span>
-            <svgicon name="down" width="25" height="25"></svgicon>
+            <svgicon
+              name="down"
+              width="25"
+              height="25"
+              @click="toogle('hasdone')"
+            ></svgicon>
           </div>
-          <div
-            class="detail-line"
-            v-for="(item, index) in sortArr(doneList)"
-            :key="index"
-          >
-            <div class="under-line">
-              <span>{{ item.title }}</span>
+          <div v-show="hasdone">
+            <div
+              class="detail-line"
+              v-for="(item, index) in sortArr(doneList)"
+              :key="index"
+            >
+              <div class="under-line">
+                <span>{{ item.title }}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -53,17 +68,24 @@
         <div class="note-detail">
           <div class="detail-line detail-title">
             <span>已取消</span>
-            <svgicon name="down" width="25" height="25"></svgicon>
+            <svgicon
+              name="down"
+              width="25"
+              height="25"
+              @click="toogle('undo')"
+            ></svgicon>
           </div>
-          <div
-            class="detail-line"
-            v-for="(item, index) in sortArr(undoList)"
-            :key="index"
-          >
-            <div>
-              <span>{{ item.title }}</span>
+          <div v-show="undo">
+            <div
+              class="detail-line"
+              v-for="(item, index) in sortArr(undoList)"
+              :key="index"
+            >
+              <div>
+                <span>{{ item.title }}</span>
+              </div>
+              <button class="undo" @click="changeNote(item, 0)">恢复</button>
             </div>
-            <button class="undo" @click="changeNote(item, 0)">恢复</button>
           </div>
         </div>
       </div>
@@ -76,7 +98,6 @@ import '@/assets/icons/more'
 import '@/assets/icons/down'
 import Tabbar from '@/components/tabbar/Index'
 import { getNote, addNote, changeState } from '@/service/api'
-// import { getNote } from '@/service/api'
 import { parseTime } from '@/utils/date'
 export default {
   name: 'Note',
@@ -88,7 +109,10 @@ export default {
       noteList: [],
       doneList: [],
       undoList: [],
-      note: ''
+      note: '',
+      todo: true,
+      hasdone: true,
+      undo: true
     }
   },
   computed: {
@@ -101,7 +125,7 @@ export default {
   },
   methods: {
     sortArr(arr) {
-      return arr.sort((a, b) => a.id - b.id)
+      return arr.slice().sort((a, b) => a.id - b.id)
     },
     deleteArr(arr, id) {
       return arr.splice(
@@ -114,15 +138,21 @@ export default {
       this.noteList = res.data.noteList
       this.doneList = res.data.doneList
       this.undoList = res.data.undoList
+      console.log(this.noteList, this.doneList, this.undoList)
     },
 
     async subNote() {
       try {
-        await addNote({
+        console.log(this.note)
+        const res = await addNote({
           title: this.note,
           time: this.getdate
         })
-        this.noteList.push(this.note)
+        const data = {
+          id: res.data.id,
+          title: this.note
+        }
+        this.noteList.push(data)
         this.note = ''
       } catch (err) {
         console.log(err)
@@ -145,6 +175,11 @@ export default {
       } catch (err) {
         console.log(err)
       }
+    },
+    toogle(val) {
+      if (val === 'todo') this.todo = !this.todo
+      if (val === 'hasdone') this.hasdone = !this.hasdone
+      if (val === 'undo') this.undo = !this.undo
     }
   }
 }

@@ -49,7 +49,9 @@ export default {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 60px;
+  z-index: 100;
+  box-shadow: 0px -1px 1px #e6e6e6;
+  background-color: #fff;
 }
 .bar-inside {
   display: flex;
