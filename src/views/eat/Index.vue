@@ -1,11 +1,14 @@
 <template>
   <div>
     <Tabbar></Tabbar>
-    <Shopbar></Shopbar>
+    <div v-for="(shop, index) in shopList" :key="index">
+      <Shopbar :shopInfo="shop"></Shopbar>
+    </div>
   </div>
 </template>
 
 <script>
+import { getShop } from '@/service/api'
 import Tabbar from '@/components/tabbar/Index'
 import Shopbar from './components/shopvar'
 export default {
@@ -13,6 +16,21 @@ export default {
   components: {
     Tabbar,
     Shopbar
+  },
+  data() {
+    return {
+      shopList: []
+    }
+  },
+  mounted() {
+    this.getShopIn()
+  },
+  methods: {
+    async getShopIn() {
+      const res = await getShop()
+      this.shopList = res.data.restaurant
+      console.log(this.shopList)
+    }
   }
 }
 </script>

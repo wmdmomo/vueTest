@@ -8,12 +8,12 @@
       </div>
       <div class="shop-content">
         <div class="content-name">
-          <span>品牌</span>
-          <span>麦克斯汉堡炸鸡（小林点）</span>
+          <span v-if="shopInfo.premium === 1" class="premium">品牌</span>
+          <span class="name">{{ shopInfo.name }}</span>
         </div>
         <div class="content-score">
-          <span>4.9</span>
-          <span>月售1035单</span>
+          <span>{{ shopInfo.rating }}</span>
+          <span>月售{{ shopInfo.order }}单</span>
         </div>
         <div class="content-delivery content-score">
           <span>￥30起送</span>
@@ -23,10 +23,10 @@
     </div>
     <div class="bar-bottom">
       <div class="shop-brand">
-        <span>汉堡薯条</span>
+        <span>{{ shopInfo.flavors }}</span>
       </div>
       <div class="shop-act">
-        <Act></Act>
+        <Act :actList="shopInfo.act"></Act>
       </div>
     </div>
   </div>
@@ -38,6 +38,9 @@ export default {
   name: 'Shopbar',
   components: {
     Act
+  },
+  props: {
+    shopInfo: Object
   }
 }
 </script>
@@ -58,7 +61,7 @@ export default {
 .shop-content {
   margin-left: 5px;
 }
-.content-name span:nth-child(1) {
+.premium {
   background-image: linear-gradient(-139deg, #fff100, #ffe339);
   color: #6f3f15;
   font-weight: 700;
@@ -66,7 +69,7 @@ export default {
   padding: 2px;
   border-radius: 3px;
 }
-.content-name span:nth-child(2) {
+.name {
   color: #333;
   font-weight: 700;
   /* font-size: 0.4rem; */

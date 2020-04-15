@@ -48,12 +48,13 @@ export default {
   position: fixed;
   bottom: 0;
   left: 0;
-  width: 100%;
+  right: 0;
   z-index: 100;
   box-shadow: 0px -1px 1px #e6e6e6;
   background-color: #fff;
 }
 .bar-inside {
+  width: 100%;
   display: flex;
   justify-content: space-around;
 }

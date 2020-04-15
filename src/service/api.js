@@ -15,3 +15,6 @@ export function addNote(data) {
 export function changeState(id, flag) {
   return service.post(`/changeState?id=${id}&flag=${flag}`)
 }
+export function getShop() {
+  return service.get('getShop/')
+}

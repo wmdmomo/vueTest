@@ -18,6 +18,7 @@ export default {
 <style>
 body {
   margin: 0px;
+  /* width: 100%; */
 }
 input {
   border: none;
