@@ -1,8 +1,10 @@
 <template>
   <div>
     <Tabbar></Tabbar>
-    <div v-for="(shop, index) in shopList" :key="index">
-      <Shopbar :shopInfo="shop"></Shopbar>
+    <div class="shop">
+      <div v-for="(shop, index) in shopList" :key="index">
+        <Shopbar :shopInfo="shop"></Shopbar>
+      </div>
     </div>
   </div>
 </template>
@@ -35,4 +37,9 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.shop {
+  padding: 5px;
+  margin-bottom: 60px;
+}
+</style>

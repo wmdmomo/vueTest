@@ -41,6 +41,10 @@ export default new Router({
       path: '/book',
       name: 'Book',
       component: Book
+    },
+    {
+      path: '/shop/:id',
+      component: () => import('./../views/bar/Index.vue')
     }
   ]
 })

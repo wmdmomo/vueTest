@@ -7,7 +7,9 @@
         class="shop-act"
         :class="{ active: index >= 2, all: isShow }"
       >
-        <span class="icon">{{ item.icon }}</span>
+        <span class="icon" :style="{ 'background-color': '#' + item.color }">{{
+          item.icon
+        }}</span>
         <span class="action">{{ item.action }}</span>
       </div>
     </div>
@@ -48,10 +50,10 @@ export default {
   margin-bottom: 3px;
 }
 .icon {
-  height: 12px;
-  width: 12px;
+  padding: 1px;
   font-size: 12px;
   color: #ffffff;
+  margin-right: 2px;
 }
 .action {
   flex: 1;

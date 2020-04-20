@@ -35,3 +35,23 @@ export function scaleImage(url, width = 320, dprAware = true) {
   }
   return `${url}?imageMogr2/auto-orient/thumbnail/${width}`
 }
+
+export function getPic(url) {
+  var result = url.replace(/([\w]{1})([\w]{2})/, '$1/$2/')
+  var type = url.match(/(jpeg|png)/)[0]
+  console.log(type)
+
+  return `https://cube.elemecdn.com/${result}.${type}?x-oss-process=image/format,webp/resize,w_65,h_65,m_fixed`
+}
+export function getIcon(url) {
+  var result = url.replace(/([\w]{1})([\w]{2})/, '$1/$2/')
+  var type = url.match(/(jpeg|png)/)[0]
+  console.log(type)
+  return `https://cube.elemecdn.com/${result}.${type}?x-oss-process=image/format,webp/resize,w_13`
+}
+export function getFoodImg(url) {
+  var result = url.replace(/([\w]{1})([\w]{2})/, '$1/$2/')
+  var type = url.match(/(jpeg|png)/)[0]
+  console.log(type)
+  return `https://cube.elemecdn.com/${result}.${type}?x-oss-process=image/resize,m_lfit,w_210,h_210/watermark,g_se,x_4,y_4,image_YS8xYS82OGRlYzVjYTE0YjU1ZjJlZmFhYmIxMjM4Y2ZkZXBuZy5wbmc_eC1vc3MtcHJvY2Vzcz1pbWFnZS9yZXNpemUsUF8yOA%3D%3D/quality,q_90/format,webp`
+}

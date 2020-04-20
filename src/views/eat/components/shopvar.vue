@@ -2,9 +2,7 @@
   <div class="shop-bar">
     <div class="bar-up">
       <div class="shop-logo">
-        <img
-          src="https://cube.elemecdn.com/9/cb/1ff422fe852cb9f5d00876d89e61ajpeg.jpeg?x-oss-process=image/format,webp/resize,w_65,h_65,m_fixed"
-        />
+        <img :src="getPic(shopInfo.img)" />
       </div>
       <div class="shop-content">
         <div class="content-name">
@@ -33,6 +31,7 @@
 </template>
 
 <script>
+import { getPic } from '@/utils/image'
 import Act from './act'
 export default {
   name: 'Shopbar',
@@ -41,6 +40,9 @@ export default {
   },
   props: {
     shopInfo: Object
+  },
+  methods: {
+    getPic
   }
 }
 </script>

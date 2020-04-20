@@ -18,3 +18,6 @@ export function changeState(id, flag) {
 export function getShop() {
   return service.get('getShop/')
 }
+export function getBar(id) {
+  return service.get(`getBar?id=${id}`)
+}
